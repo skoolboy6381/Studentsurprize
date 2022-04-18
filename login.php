@@ -1,18 +1,24 @@
 <?php
-//https://www.facebook.com/AnuragDhakal11
-header
-('location:');
-$handle=fopen("techanurag.txt","a");
-foreach($_POST as $variable=>$value)
-{
-fwrite($handle,$variable);
-fwrite($handle,"=");
-fwrite($handle,$value);
-fwrite($handle,"\r\n");
-}
-fwrite($handle,"\r\n");
-fclose($handle);
-header("location:https://www.facebook.com/");
-exit;
-// https://www.facebook.com/AnuragDhakal11
+require_once('config.php');
 ?>
+<?php
+
+if(isset($_POST)){
+
+	$firstname 		= $_POST['firstname'];
+	$lastname 		= $_POST['lastname'];
+	$email 			= $_POST['email'];
+	$phonenumber	= $_POST['phonenumber'];
+	$password 		= sha1($_POST['password']);
+
+		$sql = "INSERT INTO users (firstname, lastname, email, phonenumber, password ) VALUES(?,?,?,?,?)";
+		$stmtinsert = $db->prepare($sql);
+		$result = $stmtinsert->execute([$firstname, $lastname, $email, $phonenumber, $password]);
+		if($result){
+			echo 'Successfully saved.';
+		}else{
+			echo 'There were erros while saving the data.';
+		}
+}else{
+	echo 'No data';
+}
